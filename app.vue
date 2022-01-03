@@ -8,11 +8,12 @@ import { useMachine } from "@xstate/vue/lib/index";
 const model = createModel(
   {
     content: "",
+    timestamp: "",
     count: 0,
   },
   {
     events: {
-      FETCHED_CONTENT: (args: { content: string }) => args,
+      FETCHED_CONTENT: (args: { content: string; timestamp: string }) => args,
       INC: () => ({}),
       REFETCH: () => ({}),
     },
@@ -22,6 +23,7 @@ const model = createModel(
 const assignContentToContext = model.assign(
   {
     content: (_, event) => event.content,
+    timestamp: (_, event) => event.timestamp,
   },
   "FETCHED_CONTENT"
 );
@@ -40,11 +42,12 @@ const machine = model.createMachine({
     fetching: {
       invoke: {
         src: () => async (sendBack) => {
-          const content = await $fetch("/api/mountain");
+          const { description, timestamp } = await $fetch("/api/mountain");
 
           sendBack({
             type: "FETCHED_CONTENT",
-            content,
+            content: description,
+            timestamp
           });
         },
       },
@@ -114,7 +117,7 @@ function handleRefetchClick() {
   <div>
     <h1 class="text-center">Nuxt3 SSR + XState</h1>
 
-    <p>{{ state.value }} | {{ state.context.content }}</p>
+    <p>{{ state.value }} | {{ state.context.timestamp }} | {{ state.context.content }}</p>
 
     <button @click="handleCounterClick">
       Increment counter: {{ state.context.count }}

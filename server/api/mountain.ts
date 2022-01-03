@@ -9,5 +9,8 @@ export default async function handleMountainRequest() {
   const descriptionElement = $(".mw-parser-output > p:nth-child(3)");
   const description = descriptionElement.text();
 
-  return description;
+  return {
+    description,
+    timestamp: new Date().toISOString(),
+  };
 }

@@ -2,9 +2,11 @@
   "private": true,
   "scripts": {
     "style:watch": "tailwindcss -i ./input.css -o ./style.css --watch",
+    "style:build": "tailwindcss -i ./input.css -o ./style.css",
     "dev:nuxt": "nuxi dev",
     "dev": "npm-run-all --parallel style:watch dev:nuxt",
-    "build": "nuxi build",
+    "build": "npm-run-all style:build build:nuxt",
+    "build:nuxt": "nuxi build",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
