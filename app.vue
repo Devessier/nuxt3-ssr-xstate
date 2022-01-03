@@ -47,7 +47,7 @@ const machine = model.createMachine({
           sendBack({
             type: "FETCHED_CONTENT",
             content: description,
-            timestamp
+            timestamp,
           });
         },
       },
@@ -114,15 +114,28 @@ function handleRefetchClick() {
 </script>
 
 <template>
-  <div>
+  <div class="mx-auto max-w-3xl">
     <h1 class="text-center">Nuxt3 SSR + XState</h1>
 
-    <p>{{ state.value }} | {{ state.context.timestamp }} | {{ state.context.content }}</p>
+    <p>Current state: {{ state.value }}</p>
 
-    <button @click="handleCounterClick">
-      Increment counter: {{ state.context.count }}
-    </button>
+    <p>
+      Timestamp:
+      <time :datetime="state.context.timestamp">
+        {{ state.context.timestamp }}
+      </time>
+    </p>
 
-    <button @click="handleRefetchClick">Refetch</button>
+    <p>
+      {{ state.context.content }}
+    </p>
+
+    <div class="flex flex-col items-center space-y-2">
+      <button @click="handleCounterClick">
+        Increment counter: {{ state.context.count }}
+      </button>
+
+      <button @click="handleRefetchClick">Refetch</button>
+    </div>
   </div>
 </template>
